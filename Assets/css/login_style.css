@@ -170,7 +170,6 @@ iframe {
     background: #fff;
     border-radius: 10px;
     overflow: hidden;
-
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -300,6 +299,7 @@ iframe {
 [ Button ]*/
 .container-login100-form-btn {
     width: 100%;
+    height: 250px;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
