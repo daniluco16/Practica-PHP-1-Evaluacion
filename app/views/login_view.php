@@ -62,7 +62,7 @@
 
 
                         <div class="text-center p-t-136">
-                            <a class="txt2" href="#">
+                            <a name="registro" class="txt2" href="index.php?controller=usuario&action=adduser">
                                 Crear una cuenta nueva?
                                 <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                             </a>

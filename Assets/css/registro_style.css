@@ -1,1 +1,56 @@
+@font-face {
+    font-family: Poppins-Bold;
+    src: url('fonts/Poppins-Bold.ttf'); 
+}
 
+.cabecera{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 150px;
+    font-family: Poppins-Bold;
+    background-color: #04B404;
+}
+.titulo{
+
+    text-shadow: 2px 2px white;
+    margin-left: 20px;
+
+}
+.imagen{
+    width: 100px;
+    height: 100px;
+}
+
+img{
+
+    width: 100px;
+    height: 100px;
+}
+.contenedor{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    height: 100vh;
+    background-color: #B2E697;
+    padding: 20px;
+}
+.input-group{
+    margin-bottom: 20px;
+}
+#dni, #nombre, #nick, #contraseña, #telefono_movil, #telefono_fijo{
+    
+    width: 200px;
+    
+}
+#apellido1, #apellido2, #correo, #blog, #web, #twitter{
+    
+    width: 400px;
+    
+}
+#foto{
+    
+    width: 500px;
+    
+}
