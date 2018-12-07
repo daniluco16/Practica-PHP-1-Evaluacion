@@ -1,11 +1,12 @@
 <?php
 
 include_once 'controllers/usuario_control.php';
-
+require_once 'parameters.php';
 
 if (isset($_GET['controller']) && class_exists($_GET['controller'])."Controller") {
 
     $nombre_controlador = $_GET['controller']. "Controller";
+    
     $controlador = new $nombre_controlador();
 
 
@@ -16,12 +17,12 @@ if (isset($_GET['controller']) && class_exists($_GET['controller'])."Controller"
         $controlador->$action();
     } else {
 
-        echo "La página no existe";
+        $nombre_controlador = controller_default;
     }
     
  } else {
      
-     echo "La página no existe";
+     $nombre_controlador = controller_default;
     
  }
 ?>

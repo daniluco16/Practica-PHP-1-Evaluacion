@@ -6,7 +6,7 @@
         <title>Registro de Profesor/Administrador</title>
         <link rel="stylesheet" href="<?=base_url?>../Assets/css/registro_style.css">
 
-        <link rel="icon" type="image/png" href="<?=base_url?>../Assets/img/favicon.ico"/>
+        <link rel="icon" type="image/png" href="<?= base_url ?>../Assets/img/favicon.ico"/>
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -26,9 +26,9 @@
                 width: 200px;
             }
             .contenedor{
-                
+
                 background-color: #fff;
-                
+
             }
 
 
@@ -38,10 +38,10 @@
 
         <div class="cabecera">
             <div class="imagen"><img src="<?=base_url?>../Assets/img/teacher.svg"></div>
-            <div><h1 class="titulo">Registro de Profesores</h1></div>
+            <div><h1 class="titulo">Registro de Profesores y Activación</h1></div>
         </div>
 
-        <form action="<?=base_url?>usuario/adduser" method="post" enctype="multipart/form-data">
+        <form action="<?=base_url?>usuario/registroAdmin" method="post" enctype="multipart/form-data">
             <div class="contenedor">
 
                 <div class="input-group">
@@ -72,6 +72,14 @@
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                     <input id="contraseña" type="password" class="form-control" name="contraseña" placeholder="Contraseña">
                 </div>
+
+                <div class="form-group">
+                    <select class="form-control" id="option" name="perfil">
+                        <option value="Profesor">Profesor</option>
+                        <option value="Administrador">Administrador</option>
+                    </select>
+                </div>
+
                 <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-phone-alt"></i></span>
                     <input id="telefono_fijo" type="text" class="form-control" name="telefono_fijo" placeholder="Teléfono Fijo">
@@ -103,20 +111,27 @@
                 </div>
 
                 <div class="input-group">
-                    <button type="submit" class="btn btn-success" name="registro">ENVIAR</button>
+                    
                 </div>
                 
                 <div class="input-group">
-                    <a href="<?=base_url?>usuario/cerrar"><button type="button" class="btn btn-info" name="submit_volver">VOLVER AL LOGIN</button></a>
+                    <button type="submit" class="btn btn-success" name="registro">REGISTRAR</button>
+                </div>
+
+                <div class="input-group">
+                    <a href="<?=base_url?>usuario/inicio"><button type="button" class="btn btn-info" name="submit_volver">VOLVER AL INICIO</button></a>
                 </div>
 
                 <?php foreach ($parametros["mensajes"] as $mensaje) : ?> 
                     <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
                 <?php endforeach; ?>
 
+
             </div>
         </form>
 
     </body>
 </html>
+
+
 

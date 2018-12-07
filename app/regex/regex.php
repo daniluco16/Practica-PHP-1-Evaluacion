@@ -8,6 +8,7 @@ function filtro($datos){
         "nombre" => FALSE,
         "apellido1" => FALSE,
         "apellido2" => FALSE,
+        "nombre_usuario" => FALSE,
         "password" => FALSE,
         "telefono_fijo" => FALSE,
         "telefono_movil" => FALSE,
@@ -51,6 +52,10 @@ function filtro($datos){
         
         $error['apellido2'] = TRUE;
         
+    }
+    if (empty($datos['nombre_usuario'])){
+        
+        $error['nombre_usuario'] = TRUE;
     }
     if(empty($datos["password"]) || !preg_match($regex["password"], $datos["password"])){
         

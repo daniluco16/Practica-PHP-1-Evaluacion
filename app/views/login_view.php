@@ -5,9 +5,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Login de Profesor/Administrador</title>
-        <link rel="stylesheet" href="../Assets/css/login_style.css">
+        <link rel="stylesheet" href="<?=base_url?>../Assets/css/login_style.css">
 
-        <link rel="stylesheet" href="../Assets/css/animate.css">
+        <link rel="stylesheet" href="<?=base_url?>../Assets/css/animate.css">
 
         <link rel="icon" type="image/png" href="../../Assets/img/favicon.ico"/>
 
@@ -23,10 +23,10 @@
             <div class="container-login100">
                 <div class="wrap-login100">
                     <div class="login100-pic js-tilt" data-tilt>
-                        <img class="animated flip" src="../Assets/img/img-01.png" alt="IMG">
+                        <img class="animated flip" src="<?=base_url?>../Assets/img/img-01.png" alt="IMG">
                     </div>
 
-                    <form action="index.php?controller=usuario&action=login" method="post" class="login100-form validate-form">
+                    <form action="<?=base_url?>usuario/login" method="post" class="login100-form validate-form">
                         <span class="login100-form-title">
                             Login de miembros
                         </span>
@@ -62,7 +62,7 @@
 
 
                         <div class="text-center p-t-136">
-                            <a name="registro" class="txt2" href="index.php?controller=usuario&action=adduser">
+                            <a name="registro" class="txt2" href="<?=base_url?>usuario/adduser">
                                 Crear una cuenta nueva?
                                 <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                             </a>
