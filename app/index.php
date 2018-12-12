@@ -20,9 +20,16 @@ if (isset($_GET['controller']) && class_exists($_GET['controller'])."Controller"
         $nombre_controlador = controller_default;
     }
     
- } else {
+ } else if(!isset($_GET['action']) && !isset ($_GET['controller'])){
      
      $nombre_controlador = controller_default;
+     
+     $controlador = new $nombre_controlador();
+     
+     $action= action_default;
+     
+     
+     $controlador->$action();
     
  }
 ?>

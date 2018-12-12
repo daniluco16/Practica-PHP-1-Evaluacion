@@ -1,10 +1,21 @@
-
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
+
+<?php
+if (!isset($_SESSION["nombre_usuario"])) {
+
+    header("Location:" . base_url . "usuario/login");
+}
+?>
 <html>
     <head>
         <meta charset="UTF-8">
         <title>Perfil de Profesor/Administrador</title>
-        <link rel="stylesheet" href="<?=base_url?>../Assets/css/perfil_style.css"/>
+        <link rel="stylesheet" href="<?= base_url ?>../Assets/css/perfil_style.css"/>
 
         <link rel="icon" type="image/png" href="<?= base_url ?>../Assets/img/favicon.ico"/>
 
@@ -21,29 +32,32 @@
             <div class="titulo">
                 <h2>Perfil del usuario</h2>    
             </div>
-            
-                <div class="card" style="width:400px">
 
-                    <?php if ($parametros['datos']['fotografia'] != null) : ?>
+            <div class="card" style="width:400px">
 
-                        <img class="card-img-top" src="<?=base_url?>../Assets/img/fotos/<?= $parametros['datos']['fotografia'] ?>" alt="Card image" style="width:100%"/>
-                    <?php else : ?>
-                        <p>EMPTY</p>
-                    <?php endif; ?>
-                    <div class="card-body">
-                        <h4 class="card-title"><?= $parametros['datos']['nombre'] . " " . $parametros['datos']['apellido1'] . " " . $parametros['datos']['apellido2'] ?></h4>
-                        <p class="card-text">Nick: <?= $parametros['datos']['nombre_usuario'] ?>||Departamento:<?= $parametros['datos']['departamento'] ?></p>
-                        <p class="card-text">NIF: <?= $parametros['datos']['dni'] ?></p>
-                        <p class="card-text"><?= $parametros['datos']['correo'] ?></p>
-                        <p class="card-text">Tlf de Contacto: <?= $parametros['datos']['telefono_fijo'] . "|" . $parametros['datos']['telefono_movil'] ?></p>
-                        <p class="card-text">Web: <?= $parametros['datos']['web'] ?></p>
-                        <p class="card-text">Blog: <?= $parametros['datos']['blog'] ?></p>
-                        <p class="card-text">Twitter: <?= $parametros['datos']['twitter'] ?></p>
-                        <a href="<?=base_url?>usuario/inicio" class="btn btn-primary">Volver al inicio</a>
-                        <a href="<?=base_url?>usuario/actuser&dni=<?= $parametros['datos']['dni']?>" class="btn btn-warning">Editar</a>
-                    </div>
+<?php if ($parametros['datos']['fotografia'] != null) : ?>
 
+                    <img class="card-img-top" src="<?= base_url ?>../Assets/img/fotos/<?= $parametros['datos']['fotografia'] ?>" alt="Card image" style="width:100%" height="250px"/>
+<?php else : ?>
+                    <p>EMPTY</p>
+                <?php endif; ?>
+                <div class="card-body">
+                    <h4 class="card-title"><?= $parametros['datos']['nombre'] . " " . $parametros['datos']['apellido1'] . " " . $parametros['datos']['apellido2'] ?></h4>
+                    <p class="card-text">Nick: <?= $parametros['datos']['nombre_usuario'] ?>||Departamento:<?= $parametros['datos']['departamento'] ?></p>
+                    <p class="card-text">NIF: <?= $parametros['datos']['dni'] ?></p>
+                    <p class="card-text"><?= $parametros['datos']['correo'] ?></p>
+                    <p class="card-text">Tlf de Contacto: <?= $parametros['datos']['telefono_fijo'] . "|" . $parametros['datos']['telefono_movil'] ?></p>
+                    <p class="card-text">Web: <?= $parametros['datos']['web'] ?></p>
+                    <p class="card-text">Blog: <?= $parametros['datos']['blog'] ?></p>
+                    <p class="card-text">Twitter: <?= $parametros['datos']['twitter'] ?></p>
+                    <a href="<?= base_url ?>usuario/inicio" class="btn btn-primary">Volver al inicio</a>
+
+<?php if ($_SESSION['perfil'] == "Administrador" || $_SESSION['dni'] == $parametros['datos']['dni']) { ?>
+                        <a href="<?= base_url ?>usuario/actuser&dni=<?= $parametros['datos']['dni'] ?>" class="btn btn-warning">Editar</a>
+                    <?php } ?>
                 </div>
+
+            </div>
 
         </div> 
         <div class="footer">

@@ -4,6 +4,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+     
         <title>Login de Profesor/Administrador</title>
         <link rel="stylesheet" href="<?=base_url?>../Assets/css/login_style.css">
 

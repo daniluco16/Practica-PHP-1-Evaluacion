@@ -377,6 +377,150 @@ class usuarios_model {
 
         return $return;
     }
+    
+    public function listadoModulo() {
+        
+        $return = [
+            "correcto" => FALSE,
+            "datos" => NULL,
+            "error" => NULL
+        ];
+        
+        try{
+            
+        } catch (PDOException $ex) {
+
+        }
+        
+    }
+    
+    
+    public function insertMensaje($datos) {
+     
+        $return = [
+            "correcto" => FALSE,
+            "error" => NULL
+        ];
+
+        try {
+
+            $sql = "INSERT INTO mensajes(titulo, contenido, destinatario, Usuarios_dni, estado, fecha_mensaje) VALUES (:titulo, :contenido, :destinatario, :Usuarios_dni, :estado, :fecha_mensaje)";
+
+            $consulta = $this->db->prepare($sql);
+
+            $result = $consulta->execute([
+                'titulo' => $datos["titulo"],
+                'contenido' => $datos["contenido"],
+                'destinatario' => $datos["destinatario"],
+                'Usuarios_dni' => $datos["Usuarios_dni"],
+                'estado' => $datos["estado"],
+                'fecha_mensaje' => $datos["fecha_mensaje"]
+            ]);
+
+
+            if ($result) {
+
+                $return['correcto'] = TRUE;
+            }
+        } catch (PDOException $ex) {
+
+            $return['error'] = $ex->getMessage();
+            echo $ex->getMessage();
+        }
+
+        return $return;
+    }
+    
+    public function listadoMensajes($destinatario) {
+        $return = [
+            "correcto" => FALSE,
+            "datos" => NULL,
+            "error" => NULL
+        ];
+
+        try {
+
+            $sql = "SELECT * FROM mensajes where destinatario = :destinatario order by fecha_mensaje ";
+
+            $consulta = $this->db->prepare($sql);
+                        
+
+            $consulta->execute(['destinatario' => $destinatario]);
+
+            if ($consulta) {
+
+                $return['correcto'] = TRUE;
+                $return['datos'] = $consulta->fetchAll(PDO::FETCH_ASSOC);
+            }
+        } catch (PDOException $ex) {
+
+            $return['error'] = $ex->getMessage();
+        }
+
+        return $return;   
+    }
+    public function deleteMensaje($codMensaje) {
+        
+        $return = [
+            "correcto" => FALSE,
+            "error" => NULL
+        ];
+
+        if ($codMensaje) {
+
+            try {
+
+                $sql = "DELETE FROM mensajes WHERE codMensaje = :codMensaje";
+
+                $consulta = $this->db->prepare($sql);
+
+                $consulta->execute(['codMensaje' => $codMensaje]);
+
+                if ($consulta) {
+
+                    $return['correcto'] = TRUE;
+                }
+            } catch (PDOException $ex) {
+
+                $return['error'] = $ex->getMessage();
+            }
+        } else {
+
+            $return['correcto'] = FALSE;
+        }
+
+
+        return $return;
+        
+    }
+    
+    public function listadoCorreo() {
+        
+        $return = [
+            "correcto" => FALSE,
+            "datos" => NULL,
+            "error" => NULL
+        ];
+
+        try {
+
+            $sql = "SELECT * FROM usuarios";
+
+            $consulta = $this->db->query($sql);
+
+            if ($consulta) {
+
+                $return['correcto'] = TRUE;
+                $return['datos'] = $consulta->fetchAll(PDO::FETCH_ASSOC);
+            }
+        } catch (PDOException $ex) {
+
+            $return['error'] = $ex->getMessage();
+        }
+
+        return $return;
+        
+    }
 
 }
 

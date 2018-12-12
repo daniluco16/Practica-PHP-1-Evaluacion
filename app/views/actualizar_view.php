@@ -1,10 +1,22 @@
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
+
+<?php
+if (!isset($_SESSION["nombre_usuario"])) {
+
+    header("Location:" . base_url . "usuario/login");
+}
+?>
 
 <html>
     <head>
         <meta charset="UTF-8">
         <title>Editar Profesor/Administrador</title>
-        <link rel="stylesheet" href="<?=base_url?>../Assets/css/registro_style.css">
+        <link rel="stylesheet" href="<?= base_url ?>../Assets/css/registro_style.css">
 
         <link rel="icon" type="image/png" href="<?= base_url ?>../Assets/img/favicon.ico"/>
 
@@ -37,16 +49,18 @@
     <body>
 
         <div class="cabecera">
-            <div class="imagen"><img src="<?=base_url?>../Assets/img/users-group.svg"></div>
+            <div class="imagen"><img src="<?= base_url ?>../Assets/img/users-group.svg"></div>
             <div><h1 class="titulo">Registro de Profesores</h1></div>
         </div>
 
-        <?php // Mostramos los mensajes procedentes del controlador que se hayn generado
-            foreach ($parametros["mensajes"] as $mensaje) : ?> 
-             <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
+        <?php
+        // Mostramos los mensajes procedentes del controlador que se hayn generado
+        foreach ($parametros["mensajes"] as $mensaje) :
+            ?> 
+            <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
         <?php endforeach; ?>
-        
-        <form action="<?=base_url?>usuario/actuser" method="post" enctype="multipart/form-data">
+
+        <form action="<?= base_url ?>usuario/actuser" method="post" enctype="multipart/form-data">
             <div class="contenedor">
 
                 <div class="input-group">
@@ -112,7 +126,7 @@
                 </div>
 
                 <div class="input-group">
-                    <a href="<?=base_url?>usuario/inicio"><button type="button" class="btn btn-info" name="submit_volver">VOLVER AL INICIO</button></a>
+                    <a href="<?= base_url ?>usuario/inicio"><button type="button" class="btn btn-info" name="submit_volver">VOLVER AL INICIO</button></a>
                 </div>
 
             </div>

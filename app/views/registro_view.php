@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 
 <html>
@@ -13,6 +15,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+        <script src='https://www.google.com/recaptcha/api.js'></script>
         <style>
 
             .cabecera{
@@ -101,6 +104,10 @@
                     <span class="input-group-addon"><i class="glyphicon glyphicon-info-sign"></i></span>
                     <input id="twitter" type="text" class="form-control" name="twitter" placeholder="Twitter  @....">
                 </div>
+                
+                <div class="g-recaptcha" data-sitekey="6LcXQoAUAAAAAHvsi4jCVvCiQGMp0UXu2jh-MH6W"></div>
+                
+                <div></div>
 
                 <div class="input-group">
                     <button type="submit" class="btn btn-success" name="registro">ENVIAR</button>

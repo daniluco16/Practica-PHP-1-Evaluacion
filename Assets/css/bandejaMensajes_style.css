@@ -1,0 +1,28 @@
+@font-face {
+    font-family: Poppins-Bold;
+    src: url('fonts/Poppins-Bold.ttf'); 
+}
+
+.cabecera{
+
+    width: 100%;
+    height: 150px;
+    background-color: #FFD849;
+    font-family: Poppins-Bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+table{
+    
+    border: 1px solid black;
+    
+}
+.botones{
+
+    width: 100%;
+    padding-top: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

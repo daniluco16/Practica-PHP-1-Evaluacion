@@ -1,8 +1,15 @@
 <?php
+if(!isset($_SESSION)){
+    session_start();
+}
 
 include_once 'regex/regex.php';
 
 require_once 'models/modelo_usuarios.php';
+
+require '../vendor/autoload.php';
+
+use Spipu\Html2Pdf\Html2Pdf;
 
 class usuarioController {
 
@@ -22,6 +29,7 @@ class usuarioController {
             "datos" => NULL,
             "mensajes" => []
         ];
+
 
         if (isset($_POST['submit']) && isset($_POST['nombre_usuario']) && isset($_POST['clave'])) {
 
@@ -96,6 +104,17 @@ class usuarioController {
             $activo = 0;
             $fecha_alta = date('d/n/Y');
 
+            $captcha = $_POST['g-recaptcha-response'];
+
+            $secret = '6LcXQoAUAAAAAOPhNw1lOTRnnmdUABUAKRfdQ5L3';
+
+            if (!$captcha) {
+
+                $this->mensajes[] = [
+                    "tipo" => "danger",
+                    "mensaje" => "Valida correctamente el captcha"
+                ];
+            }
 
             if (isset($_FILES["foto"]) && (!empty($_FILES["foto"]["tmp_name"]))) {
 
@@ -147,7 +166,7 @@ class usuarioController {
 
             $errores = filtro($campos);
 
-            if ($errores['dni'] || $errores['nombre'] || $errores['apellido1'] || $errores['apellido2'] || $errores['nombre_usuario'] || $errores['password'] || $errores['telefono_fijo'] || $errores['telefono_movil'] || $errores['correo'] || $errores['web'] || $errores['twitter'] || $errores['blog']) {
+            if ($errores['dni'] || $errores['nombre'] || $errores['apellido1'] || $errores['apellido2'] || $errores['nombre_usuario'] || $errores['password'] || $errores['telefono_fijo'] || $errores['telefono_movil'] || $errores['correo'] || $errores['web'] || $errores['twitter'] || $errores['blog'] || !$captcha) {
 
                 $this->mensajes[] = [
                     "tipo" => "danger",
@@ -604,7 +623,10 @@ class usuarioController {
         include_once 'views/perfil_view.php';
     }
 
-    public function listadoFM() {
+    public function listadoAsignaturas() {
+
+        $familiasProf = [];
+        $cicloProf = [];
 
         $parametrosFM = [
             "correcto" => FALSE,
@@ -614,48 +636,25 @@ class usuarioController {
 
         if (isset($_POST['ensenanzas'])) {
 
+            $enseñanzas = $_POST['ensenanzas'];
+
             $resultModelo = $this->modelo->listadoFM($_POST['ensenanzas']);
 
             if ($resultModelo['correcto']) {
 
-                $parametrosFM['datos'] = $resultModelo['datos'];
-            } else {
-
-                $this->mensajes[] = [
-                    "tipo" => "danger",
-                    "mensaje" => "El listado no pudo realizarse correctamente!!"
-                ];
+                $familiasProf = $resultModelo['datos'];
             }
         }
-
-
-        $parametros["mensajes"] = $this->mensajes;
-
-
-        include_once 'views/asignaturas_view.php';
-    }
-
-    public function listadoCF() {
-
-        $parametrosCF = [
-            "correcto" => FALSE,
-            "datos" => NULL,
-            "error" => ""
-        ];
-
         if (isset($_POST['familia'])) {
+
+            $familia = $_POST['familia'];
 
             $resultModelo = $this->modelo->listadoCF($_POST['familia']);
 
+
             if ($resultModelo['correcto']) {
 
-                $parametrosCF['datos'] = $resultModelo['datos'];
-            } else {
-
-                $this->mensajes[] = [
-                    "tipo" => "danger",
-                    "mensaje" => "El listado no pudo realizarse correctamente!!"
-                ];
+                $cicloProf['datos'] = $resultModelo['datos'];
             }
         }
 
@@ -666,9 +665,158 @@ class usuarioController {
         include_once 'views/asignaturas_view.php';
     }
 
-    public function enviarMensaje() {
+
+    public function crearMensaje() {
+        
+        $parametros = [
+            "tituloventana" => "Registro de Mensajes",
+            "datos" => [],
+            "mensajes" => []
+        ];
+
+        if (isset($_POST['submit'])) {
+
+            $titulo = $_POST['titulo'];
+            $contenido = $_POST['contenido'];
+            $destinatario = $_POST['destinatario'];
+            $remitente = $_SESSION['dni'];
+            $estado = 0;
+            $fecha_mensaje = date('d/n/Y');
+
+
+            $campos = [
+                'titulo' => $titulo,
+                'contenido' => $contenido,
+                'destinatario' => $destinatario,
+                'Usuarios_dni' => $remitente,
+                'estado' => $estado,
+                'fecha_mensaje' => $fecha_mensaje
+            ];
+
+            $resultModelo = $this->modelo->insertMensaje($campos);
+
+            header("Location:" . base_url . "usuario/inicio");
+        }
 
         include_once 'views/enviarMensaje_view.php';
+    }
+
+    public function listadoMensajes() {
+
+
+        $parametros = [
+            "tituloventana" => "Listado de Mensajes",
+            "datos" => NULL,
+            "mensajes" => []
+        ];
+
+        $destinatario = $_SESSION['nombre_usuario'];
+        
+        $resultModelo = $this->modelo->listadoMensajes($destinatario);
+
+        if ($resultModelo['correcto']) {
+
+            $parametros['datos'] = $resultModelo['datos'];
+        } else {
+
+            $this->mensajes[] = [
+                "tipo" => "danger",
+                "mensaje" => "El listado no pudo realizarse correctamente!!"
+            ];
+        }
+
+        $parametros["mensajes"] = $this->mensajes;
+
+
+        include_once 'views/bandejaMensajes_view.php';
+    }
+
+    public function eliminarMensajes() {
+
+        
+        if (isset($_GET['codMensaje'])) {
+
+            $codMensaje = $_GET['codMensaje'];
+
+            $resultModelo = $this->modelo->deleteMensaje($codMensaje);
+
+            if ($resultModelo["correcto"]) {
+
+                $this->mensajes[] = [
+                    "tipo" => "success",
+                    "mensaje" => "Se eliminó correctamente el usuario"
+                ];
+            } else {
+
+                $this->mensajes[] = [
+                    "tipo" => "danger",
+                    "mensaje" => "No se eliminó correctamente el usuario"
+                ];
+            }
+        }
+        $this->listadoMensajes();
+    }
+
+    public function envioCorreo() {
+
+
+        $parametros = [
+            "tituloventana" => "Listado de Profesor/Administrador",
+            "datos" => NULL,
+            "mensajes" => []
+        ];
+
+        $resultModelo = $this->modelo->listadoCorreo();
+
+        if ($resultModelo['correcto']) {
+
+            $parametros['datos'] = $resultModelo['datos'];
+        } else {
+
+            $this->mensajes[] = [
+                "tipo" => "danger",
+                "mensaje" => "El listado no pudo realizarse correctamente!!"
+            ];
+        }
+
+        $parametros["mensajes"] = $this->mensajes;
+
+        if (isset($_POST['submit'])) {
+
+            $asun = $_POST['asunto'];
+
+            $mens = $_POST['mensaje'];
+
+            $remitente = "From: " . $_POST['remitente'] . "\r\n";
+
+            if (count($_POST['check_list']) == 0) {
+
+                header("Location:" . base_url . "usuario/envioCorreo");
+            } else {
+
+                foreach ($_POST['check_list'] as $pulsado) {
+
+                    mail($pulsado, $asun, $mens, $remitente);
+                }
+            }
+        }
+
+
+        include_once 'views/correo_view.php';
+    }
+
+    public function print_pdf() {
+
+        ob_start();
+        include dirname(__FILE__) . 'views/listado_view.php';
+
+        $content = ob_get_clean();
+
+        $html2pdf = new Html2Pdf('p', 'A4', 'es', 'true', 'UTF-8');
+
+
+        $html2pdf->writeHTML($content);
+        $html2pdf->output('listado_profesores.pdf');
     }
 
     public function inicio() {
@@ -683,6 +831,7 @@ class usuarioController {
 
     public function cerrar() {
 
+        session_start();
         session_destroy();
 
         header("Location:" . base_url . "usuario/login");

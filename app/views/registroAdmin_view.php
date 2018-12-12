@@ -1,10 +1,22 @@
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
+
+<?php
+if (!isset($_SESSION["nombre_usuario"])) {
+
+    header("Location:" . base_url . "usuario/login");
+}
+?>
 
 <html>
     <head>
         <meta charset="UTF-8">
         <title>Registro de Profesor/Administrador</title>
-        <link rel="stylesheet" href="<?=base_url?>../Assets/css/registro_style.css">
+        <link rel="stylesheet" href="<?= base_url ?>../Assets/css/registro_style.css">
 
         <link rel="icon" type="image/png" href="<?= base_url ?>../Assets/img/favicon.ico"/>
 
@@ -28,8 +40,8 @@
             .contenedor{
 
                 background-color: #fff;
-
             }
+
 
 
         </style>
@@ -37,11 +49,11 @@
     <body>
 
         <div class="cabecera">
-            <div class="imagen"><img src="<?=base_url?>../Assets/img/teacher.svg"></div>
+            <div class="imagen"><img src="<?= base_url ?>../Assets/img/teacher.svg"></div>
             <div><h1 class="titulo">Registro de Profesores y Activación</h1></div>
         </div>
 
-        <form action="<?=base_url?>usuario/registroAdmin" method="post" enctype="multipart/form-data">
+        <form action="<?= base_url ?>usuario/registroAdmin" method="post" enctype="multipart/form-data">
             <div class="contenedor">
 
                 <div class="input-group">
@@ -111,15 +123,15 @@
                 </div>
 
                 <div class="input-group">
-                    
+
                 </div>
-                
+
                 <div class="input-group">
                     <button type="submit" class="btn btn-success" name="registro">REGISTRAR</button>
                 </div>
 
                 <div class="input-group">
-                    <a href="<?=base_url?>usuario/inicio"><button type="button" class="btn btn-info" name="submit_volver">VOLVER AL INICIO</button></a>
+                    <a href="<?= base_url ?>usuario/inicio"><button type="button" class="btn btn-info" name="submit_volver">VOLVER AL INICIO</button></a>
                 </div>
 
                 <?php foreach ($parametros["mensajes"] as $mensaje) : ?> 

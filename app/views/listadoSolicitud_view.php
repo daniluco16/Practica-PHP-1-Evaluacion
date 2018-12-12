@@ -1,19 +1,37 @@
-<?php session_start(); ?>
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
+
+<?php
+if (!isset($_SESSION["nombre_usuario"])) {
+
+    header("Location:" . base_url . "usuario/login");
+}
+?>
 
 <html>
     <head>
         <meta charset="UTF-8">
         <title>Listado de Profesor/Administrador</title>
-        <link rel="stylesheet" href="<?=base_url?>../Assets/css/listado_style.css"/>
+        <link rel="stylesheet" href="<?= base_url ?>../Assets/css/listado_style.css"/>
 
         <link rel="icon" type="image/png" href="<?= base_url ?>../Assets/img/favicon.ico"/>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
         <meta http-equiv="X-UA-Compatible" content="ie=edge">            
 
         <style>
+
+            @font-face {
+                font-family: Poppins-Bold;
+                src: url('fonts/Poppins-Bold.ttf'); 
+            }
 
             .footer{
 
@@ -29,6 +47,13 @@
                 align-items: center;
 
             }
+            a{
+                font-family: Poppins-Bold;
+            }
+            th{
+                text-align: center;
+            }
+
 
         </style>
 
@@ -53,15 +78,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    $contador = 0;
-                    $modal = "";
-                    ?>
+<?php
+$contador = 0;
+$modal = "";
+?>
                     <?php foreach ($parametros["datos"] as $datos) : ?>
 
                         <?php
                         $contador++;
-                        $modal = "m" . $contador;
+                        $modal = "md" . $contador;
                         ?>
                         <tr>
                             <td><?= $datos['dni'] ?></td>
@@ -73,7 +98,7 @@
 
 
                             <td>
-                                <a name="activar" href="<?=base_url?>usuario/actSolicitud&dni=<?= $datos['dni'] ?>">Activar </a>&nbsp;
+                                <a name="activar" href="<?= base_url ?>usuario/actSolicitud&dni=<?= $datos['dni'] ?>">Activar </a>&nbsp;
                                 <a data-toggle="modal" href="#<?= $modal ?>"> Rechazar</a>
                             </td>
                         </tr>
@@ -93,19 +118,19 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                                    <a class="btn btn-primary" href="<?=base_url?>usuario/delete&dni=<?= $datos['dni'] ?>">Eliminar</a>
+                                    <a class="btn btn-primary" href="<?= base_url ?>usuario/delete&dni=<?= $datos['dni'] ?>">Eliminar</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     </tbody>
-                <?php endforeach; ?>
+<?php endforeach; ?>
             </table>
         </div>
 
         <div class="contenedor">
-            <a class="volver" href="<?=base_url?>usuario/inicio">Volver al Inicio</a>  
+            <a class="volver" href="<?= base_url ?>usuario/inicio">Volver al Inicio</a>  
         </div> 
 
         <div class="footer">

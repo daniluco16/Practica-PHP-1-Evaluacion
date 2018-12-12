@@ -1,0 +1,32 @@
+@font-face {
+    font-family: Poppins-Bold;
+    src: url('fonts/Poppins-Bold.ttf'); 
+}
+
+.cabecera{
+
+    font-family: Poppins-Bold;
+    background-color: #000;
+    color: white;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.titulo{
+    margin-left: 10px;
+}
+
+.botones{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10%;
+}
+.btn-danger{
+    
+    margin-left: 30px;
+    
+}
