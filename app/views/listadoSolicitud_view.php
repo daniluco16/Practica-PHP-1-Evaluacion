@@ -78,10 +78,10 @@ if (!isset($_SESSION["nombre_usuario"])) {
                     </tr>
                 </thead>
                 <tbody>
-<?php
-$contador = 0;
-$modal = "";
-?>
+                    <?php
+                    $contador = 0;
+                    $modal = "";
+                    ?>
                     <?php foreach ($parametros["datos"] as $datos) : ?>
 
                         <?php
@@ -118,14 +118,14 @@ $modal = "";
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                                    <a class="btn btn-primary" href="<?= base_url ?>usuario/delete&dni=<?= $datos['dni'] ?>">Eliminar</a>
+                                    <a class="btn btn-primary" href="<?= base_url ?>usuario/delete&dni=<?= $datos['dni'] ?>&nombre_usuario=<?= $datos['nombre_usuario'] ?>&perfil=<?= $datos['perfil'] ?>">Eliminar</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     </tbody>
-<?php endforeach; ?>
+                <?php endforeach; ?>
             </table>
         </div>
 

@@ -3,7 +3,7 @@
 #Activar rewrite
 
 RewriteEngine on
-ErrorDocument 404 http://localhost/PHP_1Eval_Practica/app/error/
+ErrorDocument 404 http://localhost/PHP_1Eval_Practica/app/usuario/error
 
 RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{SCRIPT_FILENAME} !-f

@@ -21,10 +21,21 @@ if (!isset($_SESSION["nombre_usuario"])) {
 
         <link rel="icon" type="image/png" href="<?= base_url ?>../Assets/img/favicon.ico"/>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.16/css/mdb.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+        <style>
 
+            th{
+
+                background-color: black;
+                text-align: center;
+                color: white;
+
+            }
+
+        </style>
 
 
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -45,7 +56,6 @@ if (!isset($_SESSION["nombre_usuario"])) {
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">Título Mensaje</th>
-                            <th scope="col">Contenido</th>
                             <th scope="col">NIF del remitente</th>
                             <th scope="col">Fecha del Mensaje</th>
                             <th scope="col">Operaciones</th>
@@ -56,52 +66,64 @@ if (!isset($_SESSION["nombre_usuario"])) {
                         <?php
                         $contador = 0;
                         $modal = "";
+                        
+                        $modal2 = "";
                         ?>
                         <?php foreach ($parametros["datos"] as $datos) : ?>
 
                             <?php
                             $contador++;
                             $modal = "s" . $contador;
+                            $modal2 = "m" . $contador;
                             ?>
 
                             <tr>
                                 <td><?= $datos['titulo'] ?></td>
-                                <td><?= $datos['contenido'] ?></td>
                                 <td><?= $datos['Usuarios_dni'] ?></td>
                                 <td><?= $datos['fecha_mensaje'] ?></td>
                                 <td>
-                                    <a data-toggle="modal" href="#<?= $modal ?>">Eliminar Mensaje </a><br>
-
-
-
-
+                                    <a data-toggle="modal" href="#<?= $modal ?>">Ver Contenido</a>
+                                    <a data-toggle="modal" href="#<?= $modal2 ?>">Eliminar Mensaje</a><br>
                                 </td>
                             </tr>
 
 
-
-
-                        </tbody>
-                        <!-- Modal -->
-                        <div class="modal fade" id="<?= $modal ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-
-                            <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-
-
+                        <div class="modal fade" id="<?= $modal ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Contenido del Mensaje</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        ...
+                                        <?= $datos['contenido']?>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <a type="button" class="btn btn-primary" href="<?= base_url ?>usuario/eliminarMensajes&codMensaje=<?= $datos['codMensaje'] ?>">Save changes</a>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        </tbody>
+                        <!-- Modal -->
+                        <div class="modal fade" id="<?= $modal2 ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Profesor</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Estas seguro que quieres eliminar a este Profesor?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a class="btn btn-primary" href="<?= base_url ?>usuario/eliminarMensajes&codMensaje=<?= $datos['codMensaje'] ?>">Eliminar</a>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>          
                                     </div>
                                 </div>
                             </div>

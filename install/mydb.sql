@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-11-2018 a las 16:50:54
--- Versión del servidor: 10.1.26-MariaDB
--- Versión de PHP: 7.1.9
+-- Tiempo de generación: 13-12-2018 a las 17:39:30
+-- Versión del servidor: 10.1.35-MariaDB
+-- Versión de PHP: 7.2.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,6 +21,15 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `mydb`
 --
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `log` (IN `usuario` VARCHAR(45), IN `perfil` VARCHAR(45), IN `actividad` VARCHAR(45))  NO SQL
+INSERT INTO `log`(`usuario`, `perfil`, `fechayhora`, `actividad`)VALUES(usuario, perfil, now(), actividad)$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -80,6 +89,15 @@ CREATE TABLE `cf` (
   `FP_codFP` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `cf`
+--
+
+INSERT INTO `cf` (`codCF`, `nombre`, `tipo`, `FP_codFP`) VALUES
+(1, 'DAW', 'Superior', 1),
+(2, 'ASIR', 'Superior', 1),
+(3, 'SMR', 'Superior', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -114,6 +132,15 @@ CREATE TABLE `fp` (
   `nombre` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `fp`
+--
+
+INSERT INTO `fp` (`codFP`, `nombre`) VALUES
+(1, 'Informática'),
+(2, 'Comercio y Marketing'),
+(3, 'Administración y Finanzas');
+
 -- --------------------------------------------------------
 
 --
@@ -124,6 +151,49 @@ CREATE TABLE `fp_has_solicitud` (
   `FP_codFP` int(11) NOT NULL,
   `Solicitud_codSolicitud` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `log`
+--
+
+CREATE TABLE `log` (
+  `usuario` varchar(45) NOT NULL,
+  `perfil` varchar(45) NOT NULL,
+  `fechayhora` varchar(45) NOT NULL,
+  `actividad` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `log`
+--
+
+INSERT INTO `log` (`usuario`, `perfil`, `fechayhora`, `actividad`) VALUES
+('alfonso', 'Administrador', '2018-12-13 17:03:34', 'Login');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mensajes`
+--
+
+CREATE TABLE `mensajes` (
+  `codMensaje` int(11) NOT NULL,
+  `titulo` varchar(45) DEFAULT NULL,
+  `contenido` varchar(100) DEFAULT NULL,
+  `destinatario` varchar(45) DEFAULT NULL,
+  `Usuarios_dni` varchar(45) NOT NULL,
+  `estado` tinyint(2) NOT NULL DEFAULT '0',
+  `fecha_mensaje` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `mensajes`
+--
+
+INSERT INTO `mensajes` (`codMensaje`, `titulo`, `contenido`, `destinatario`, `Usuarios_dni`, `estado`, `fecha_mensaje`) VALUES
+(2, 'Bienvenido a moodle', 'ghjgj', 'alfonso', '45789656E', 0, '12/12/2018');
 
 -- --------------------------------------------------------
 
@@ -139,6 +209,16 @@ CREATE TABLE `modulo` (
   `clave_matri` varchar(45) NOT NULL,
   `CF_codCF` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `modulo`
+--
+
+INSERT INTO `modulo` (`codAsig`, `nombre`, `curso`, `grupo`, `clave_matri`, `CF_codCF`) VALUES
+(1, 'DAWES', '2', 'A', 'prueba', 1),
+(2, 'DAWEC', '2', 'A', 'prueba', 1),
+(3, 'DAWEB', '2', 'A', 'prueba', 1),
+(4, 'DIWEB', '2', 'A', 'prueba', 1);
 
 -- --------------------------------------------------------
 
@@ -162,9 +242,9 @@ CREATE TABLE `usuarios` (
   `nombre` varchar(30) NOT NULL,
   `apellido1` varchar(30) NOT NULL,
   `apellido2` varchar(30) NOT NULL,
-  `fotografia` varchar(100) NOT NULL,
+  `fotografia` varchar(100) DEFAULT NULL,
   `nombre_usuario` varchar(45) NOT NULL,
-  `contraseña` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
   `perfil` varchar(45) NOT NULL,
   `telefono_fijo` int(11) NOT NULL,
   `telefono_movil` int(11) NOT NULL,
@@ -174,9 +254,17 @@ CREATE TABLE `usuarios` (
   `blog` varchar(45) DEFAULT NULL,
   `twitter` varchar(45) DEFAULT NULL,
   `activo` tinyint(4) NOT NULL,
-  `fecha_alta` date NOT NULL,
+  `fecha_alta` varchar(45) NOT NULL,
   `asignatura` varchar(400) DEFAULT 'null'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`dni`, `nombre`, `apellido1`, `apellido2`, `fotografia`, `nombre_usuario`, `password`, `perfil`, `telefono_fijo`, `telefono_movil`, `correo`, `departamento`, `web`, `blog`, `twitter`, `activo`, `fecha_alta`, `asignatura`) VALUES
+('45789645W', 'paula', 'mares', 'romero', NULL, 'paula', 'ab514d60d8f49cc080be4b9994e5a35b08f01f5c', 'Profesor', 955858545, 677885452, 'prueba2@gmail.com', 'Informática', '', '', '', 1, '12/12/2018', 'null'),
+('45789656E', 'Alfonso', 'Romero', 'Caro', '1544544696-man.svg', 'alfonso', '112c78a04c7685b654e06bdeebf9ef7f9056603a', 'Administrador', 959788452, 677854512, 'correoprueba@hotmail.com', 'Informática', '', '', '', 1, '11/12/2018', 'null');
 
 --
 -- Índices para tablas volcadas
@@ -244,6 +332,13 @@ ALTER TABLE `fp_has_solicitud`
   ADD KEY `fk_FP_has_Solicitud_FP1_idx` (`FP_codFP`);
 
 --
+-- Indices de la tabla `mensajes`
+--
+ALTER TABLE `mensajes`
+  ADD PRIMARY KEY (`codMensaje`),
+  ADD KEY `fk_mensajes_Usuarios1_idx` (`Usuarios_dni`);
+
+--
 -- Indices de la tabla `modulo`
 --
 ALTER TABLE `modulo`
@@ -277,7 +372,7 @@ ALTER TABLE `bach`
 -- AUTO_INCREMENT de la tabla `cf`
 --
 ALTER TABLE `cf`
-  MODIFY `codCF` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codCF` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `eso`
@@ -289,13 +384,19 @@ ALTER TABLE `eso`
 -- AUTO_INCREMENT de la tabla `fp`
 --
 ALTER TABLE `fp`
-  MODIFY `codFP` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codFP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `mensajes`
+--
+ALTER TABLE `mensajes`
+  MODIFY `codMensaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `modulo`
 --
 ALTER TABLE `modulo`
-  MODIFY `codAsig` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codAsig` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitud`
@@ -345,6 +446,12 @@ ALTER TABLE `eso_has_solicitud`
 ALTER TABLE `fp_has_solicitud`
   ADD CONSTRAINT `fk_FP_has_Solicitud_FP1` FOREIGN KEY (`FP_codFP`) REFERENCES `fp` (`codFP`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_FP_has_Solicitud_Solicitud1` FOREIGN KEY (`Solicitud_codSolicitud`) REFERENCES `solicitud` (`codSolicitud`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `mensajes`
+--
+ALTER TABLE `mensajes`
+  ADD CONSTRAINT `fk_mensajes_Usuarios1` FOREIGN KEY (`Usuarios_dni`) REFERENCES `usuarios` (`dni`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `modulo`

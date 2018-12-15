@@ -3,7 +3,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 ?>
-<!DOCTYPE html>
+
 
 <?php
 if (!isset($_SESSION["nombre_usuario"])) {
@@ -11,7 +11,7 @@ if (!isset($_SESSION["nombre_usuario"])) {
     header("Location:" . base_url . "usuario/login");
 }
 ?>
-
+<!DOCTYPE html>
 <html>
     <head>
 
@@ -21,14 +21,7 @@ if (!isset($_SESSION["nombre_usuario"])) {
 
         <link rel="icon" type="image/png" href="<?= base_url ?>../Assets/img/favicon.ico"/>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js%22%3E"></script>
-
-
+        <?php include 'links.php'; ?>
 
     </head>
     <body>
@@ -42,17 +35,7 @@ if (!isset($_SESSION["nombre_usuario"])) {
 
                 <div class="form-group">
                     <select class="form-control" name="ensenanzas" id="ensenanzas">
-
-<?php if ($enseñanzas == "") { ?>
-
-                            <option selected="" disabled="">Enseñanzas</option>
-
-<?php } else { ?>
-
-                            <option selected="" disabled=""><?= $enseñanzas ?></option>
-
-<?php } ?>
-
+                        <option value="">Enseñanzas</option>
                         <option value="ESO">ESO</option>
                         <option value="Bachillerato">Bachillerato</option>
                         <option value="Ciclo Formativo">Ciclo Formativo</option>
@@ -60,107 +43,25 @@ if (!isset($_SESSION["nombre_usuario"])) {
                 </div>
 
 
-                <div class="form-group" id="familia">               
+                <div class="form-group">               
 
-                    <select class="form-control" name="familia">
-<?php if ($familia == "") { ?>
+                    <select class="form-control" name="familia" id="familia">
 
-                            <option selected="" disabled="">Familias Profesionales</option>
+                        <option value="">Familias Profesionales</option>
 
-<?php } else { ?>
-
-                            <option selected="" disabled=""><?= $familia ?></option>
-
-<?php } ?>
-
-                        <?php foreach ($familiasProf as $datos) : ?>
-
-                            <option value="<?= $datos['nombre'] ?>"><?= $datos['nombre'] ?></option>
-
-<?php endforeach; ?>
                     </select>
                 </div>
 
+                <div class="form-group">
 
-
-
-                <div class="form-group" id="ciclo">
-
-                    <select class="form-control" name="ciclo">
+                    <select class="form-control" name="ciclo" id="ciclo">
                         <option selected="" disabled="">Asignar Ciclos</option>
 
-<?php foreach ($parametrosCF['datos'] as $datos) : ?>
-
-                            <option value="<?= $datos['nombre'] ?>"><?= $datos['nombre'] ?></option>
-
-<?php endforeach; ?>
                     </select>
                 </div>
-
-
-
-                <!--                <div class="form-group" id="modulos">
-                
-                                    <select class="form-control" name="modulos">
-                                        <option selected="" disabled="">Asignar Módulos</option>
-                                    </select>
-                                </div>
-                
-                
-                
-                
-                                <div class="form-group" id="curso">
-                
-                                    <select class="form-control" name="curso">
-                                        <option selected="" disabled="">Asignar Curso</option>
-                                    </select>
-                                </div>
-                
-                                <div class="form-group" id="grupo">
-                
-                                    <select class="form-control" name="grupo">
-                                        <option selected="" disabled="">Asignar Grupo</option>
-                                    </select>
-                                </div>
-                
-                                <div class="form-group" id="asignatura">
-                
-                                    <select class="form-control" name="asignatura">
-                                        <option selected="" disabled="">Asignar Asignaturas</option>
-                                    </select>
-                                </div>-->
-
-
 
             </form>
 
-            <script>
-
-
-                $("document").ready(function () {
-
-                    $("#ensenanzas").change(function ()
-                    {
-                        alert("hola");
-                        var $form = $(this).closest('form');
-
-                        $form.find('input[type=submit][name="submit"]').click();
-
-                    });
-
-                    $("h1").click(function () {
-
-                        alert("titulo");
-
-                    });
-
-
-                });
-
-
-            </script>
-
-            <input type="submit" value="Enviar" name="submit" style="display: none">
 
         </div>
         <div class="botones">
@@ -168,6 +69,94 @@ if (!isset($_SESSION["nombre_usuario"])) {
             <a href="<?= base_url ?>usuario/inicio"><button type="button" class="btn btn-danger">CERRAR</button></a>
         </div>
 
+        <script>
+
+            $(document).ready(function () {
+
+                $('#ensenanzas').change(function () {
+
+                    var ensenanzas = $('#ensenanzas').val();
+
+                    if (ensenanzas !== '')
+                    {
+
+                        $.ajax({
+
+                            url: "<?php echo base_url ?>usuario/listadoFM",
+                            method: "POST",
+                            data: {ensenanzas: ensenanzas},
+                            success: function (data)
+                            {
+                                $('#familia').html(data);
+
+                            }
+                        });
+
+                    } else {
+
+                        $('#familia').html('<option value="">Seleccionar familia profesional</option>');
+                        $('#ciclo').html('<option value="">Seleccionar ciclo</option>');
+                        $('#modulo').html('<option value="">Seleccionar módulo</option>');
+                        $('#curso').html('<option value="">Curso</option>');
+                        $('#grupo').html('<option value="">Grupo</option>');
+                    }
+                });
+
+                $('#familia').change(function () {
+
+                    var familia = $('#familia').val();
+
+                    if (familia !== '')
+                    {
+
+                        $.ajax({
+
+                            url: "<?php echo base_url ?>usuario/listadoCF",
+                            method: "POST",
+                            data: {familia: familia},
+                            success: function (data)
+                            {
+                                $('#ciclo').html(data);
+                            }
+                        });
+
+                    } else {
+                        $('#ciclo').html('<option value="">Seleccionar ciclo</option>');
+                        $('#modulo').html('<option value="">Seleccionar módulo</option>');
+                        $('#curso').html('<option value="">Curso</option>');
+                        $('#grupo').html('<option value="">Grupo</option>');
+                    }
+                });
+                $('#ciclo').change(function () {
+
+                    var ciclo = $('#ciclo').val();
+
+                    if (ciclo !== '')
+                    {
+
+                        $.ajax({
+
+                            url: "<?php echo base_url ?>usuario/listadoModulo",
+                            method: "POST",
+                            data: {ciclo: ciclo},
+                            success: function (data)
+                            {
+                                $('#modulo').html(data);
+                            }
+                        });
+
+                    } else {
+                        $('#modulo').html('<option value="">Seleccionar módulo</option>');
+                        $('#curso').html('<option value="">Curso</option>');
+                        $('#grupo').html('<option value="">Grupo</option>');
+                    }
+                });
+
+
+
+            });
+
+        </script>
 
     </body>
 </html>

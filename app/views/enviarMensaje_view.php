@@ -38,6 +38,10 @@ if (!isset($_SESSION["nombre_usuario"])) {
 
                 <form action="<?= base_url ?>usuario/crearMensaje" method="post">
 
+                    <?php foreach ($parametros["mensajes"] as $mensaje) : ?> 
+                        <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensajes"] ?></div>
+                    <?php endforeach; ?>
+                        
                     <div class="form-group">
                         <label for="usr">Título del Mensaje</label>
                         <input type="text" class="form-control" id="usr" placeholder="Bienvenido a Moodle" name="titulo">

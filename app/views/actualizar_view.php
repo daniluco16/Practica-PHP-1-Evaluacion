@@ -92,6 +92,10 @@ if (!isset($_SESSION["nombre_usuario"])) {
                     <input id="contraseña" type="password" class="form-control" name="contraseña" placeholder="Contraseña">
                 </div>
                 <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input id="contraseña" type="password" class="form-control" name="confirmacion" placeholder="Confirmación de contraseña">
+                </div>
+                <div class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-phone-alt"></i></span>
                     <input id="telefono_fijo" type="text" class="form-control" name="telefono_fijo" placeholder="Teléfono Fijo" value="<?= $parametros["datos"]["telefono_fijo"] ?>">
                 </div>
@@ -121,6 +125,9 @@ if (!isset($_SESSION["nombre_usuario"])) {
                     <input id="twitter" type="text" class="form-control" name="twitter" placeholder="Twitter  @...." value="<?= $parametros["datos"]["twitter"] ?>">
                 </div>
 
+                <div>
+                </div>
+                
                 <div class="input-group">
                     <button type="submit" class="btn btn-success" name="registro">ACTUALIZAR</button>
                 </div>

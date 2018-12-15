@@ -38,8 +38,11 @@ if (!isset($_SESSION["nombre_usuario"])) {
                     <?php if ($_SESSION['perfil'] == 'Administrador') : ?>
                         <li class="act"><a href="<?= base_url ?>usuario/envioCorreo"><span class="glyphicon glyphicon-star"></span>&nbsp;CORREO</a></li>
                     <?php endif; ?>
-                    <li class="act"><a href="<?= base_url ?>usuario/listadoAsignaturas"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;ASIGNATURAS</a></li>
+                    <li class="act"><a href="<?= base_url ?>usuario/index"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;ASIGNATURAS</a></li>
                     <li class="act"><a href="<?= base_url ?>usuario/listadoMensajes"><span class="glyphicon glyphicon-envelope"></span>&nbsp;BANDEJA DE ENTRADA</a></li>
+                    <?php if($_SESSION['perfil'] == 'Administrador') { ?>
+                    <li class="act"><a href="<?= base_url ?>usuario/listadolog"><span class="glyphicon glyphicon-th-list"></span>&nbsp;RESUMEN LOG</a></li>
+                    <?php } ?>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="act"><a href="<?= base_url ?>usuario/verperfil&dni=<?= $_SESSION['dni'] ?>"><span class="glyphicon glyphicon-user"></span>&nbsp; <?= $_SESSION['nombre_usuario'] . "(" . $_SESSION['perfil'] . ")"; ?></a></li>

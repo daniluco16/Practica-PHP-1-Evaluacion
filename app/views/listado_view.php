@@ -1,4 +1,4 @@
-<?php
+<?php 
 if (!isset($_SESSION)) {
     session_start();
 }
@@ -153,7 +153,7 @@ if (!isset($_SESSION["nombre_usuario"])) {
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                                                    <a class="btn btn-primary" href="<?= base_url ?>usuario/delete&dni=<?= $datos['dni'] ?>">Eliminar</a>
+                                                    <a class="btn btn-primary" href="<?= base_url ?>usuario/delete&dni=<?= $datos['dni'] ?>&nombre_usuario=<?= $datos['nombre_usuario']?>&perfil=<?= $datos['perfil']?>">Eliminar</a>
                                                 </div>
                                             </div>
                                         </div>
