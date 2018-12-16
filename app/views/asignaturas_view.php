@@ -31,13 +31,13 @@ if (!isset($_SESSION["nombre_usuario"])) {
         <div class="contenido">
 
 
-            <form action="<?= base_url ?>usuario/listadoAsignaturas" method="post" class="form-inline">
+            <form action="<?= base_url ?>usuario/ingresarAsignaturas" method="post" class="form-inline">
 
                 <div class="form-group">
                     <select class="form-control" name="ensenanzas" id="ensenanzas">
                         <option value="">Enseñanzas</option>
-                        <option value="ESO">ESO</option>
-                        <option value="Bachillerato">Bachillerato</option>
+                        <option value="ESO" disabled="">ESO</option>
+                        <option value="Bachillerato" disabled="">Bachillerato</option>
                         <option value="Ciclo Formativo">Ciclo Formativo</option>
                     </select>
                 </div>
@@ -46,8 +46,7 @@ if (!isset($_SESSION["nombre_usuario"])) {
                 <div class="form-group">               
 
                     <select class="form-control" name="familia" id="familia">
-
-                        <option value="">Familias Profesionales</option>
+                        <option value="" id="defaultFM">Familias Profesionales</option>
 
                     </select>
                 </div>
@@ -60,14 +59,46 @@ if (!isset($_SESSION["nombre_usuario"])) {
                     </select>
                 </div>
 
+                <div class="form-group">
+
+                    <select class="form-control" name="modulo" id="modulo">
+                        <option selected="" disabled="">Asignar Módulo</option>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+
+                    <select class="form-control" name="curso" id="curso">
+                        <option selected="" disabled="">Asignar Curso</option>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+
+                    <select class="form-control" name="grupo" id="grupo">
+                        <option selected="" disabled="">Asignar Grupo</option>
+
+                    </select>
+                </div>
+
+                <input type="hidden" name="pruebaensenanza" id="pruebaensenanza">
+                <input type="hidden" name="pruebaFP" id="pruebaFP">
+                <input type="hidden" name="pruebaCiclo" id="pruebaCiclo">
+                <input type="hidden" name="pruebaModulo" id="pruebaModulo">
+                <input type="hidden" name="pruebaCurso" id="pruebaCurso">
+                <input type="hidden" name="pruebaGrupo" id="pruebaGrupo">
+                
+                <div class="botones">
+                    <button type="submit" class="btn btn-dark" name="submit">AGREGAR</button>
+                    <a href="<?= base_url ?>usuario/inicio"><button type="button" class="btn btn-danger">CERRAR</button></a>
+                </div>
+
             </form>
 
+        </div>
 
-        </div>
-        <div class="botones">
-            <button type="button" class="btn btn-dark" name="submit">AGREGAR</button>
-            <a href="<?= base_url ?>usuario/inicio"><button type="button" class="btn btn-danger">CERRAR</button></a>
-        </div>
 
         <script>
 
@@ -79,6 +110,9 @@ if (!isset($_SESSION["nombre_usuario"])) {
 
                     if (ensenanzas !== '')
                     {
+                        var ensenanzaselec = $('#ensenanzas option:selected').text();
+
+                        document.getElementById('pruebaensenanza').value = ensenanzaselec;
 
                         $.ajax({
 
@@ -87,6 +121,7 @@ if (!isset($_SESSION["nombre_usuario"])) {
                             data: {ensenanzas: ensenanzas},
                             success: function (data)
                             {
+
                                 $('#familia').html(data);
 
                             }
@@ -109,6 +144,10 @@ if (!isset($_SESSION["nombre_usuario"])) {
                     if (familia !== '')
                     {
 
+                        var familiaselec = $('#familia option:selected').text();
+
+                        document.getElementById('pruebaFP').value = familiaselec;
+
                         $.ajax({
 
                             url: "<?php echo base_url ?>usuario/listadoCF",
@@ -127,15 +166,18 @@ if (!isset($_SESSION["nombre_usuario"])) {
                         $('#grupo').html('<option value="">Grupo</option>');
                     }
                 });
+
                 $('#ciclo').change(function () {
 
                     var ciclo = $('#ciclo').val();
 
                     if (ciclo !== '')
                     {
+                        var cicloselec = $('#ciclo option:selected').text();
+
+                        document.getElementById('pruebaCiclo').value = cicloselec;
 
                         $.ajax({
-
                             url: "<?php echo base_url ?>usuario/listadoModulo",
                             method: "POST",
                             data: {ciclo: ciclo},
@@ -144,12 +186,71 @@ if (!isset($_SESSION["nombre_usuario"])) {
                                 $('#modulo').html(data);
                             }
                         });
-
                     } else {
                         $('#modulo').html('<option value="">Seleccionar módulo</option>');
                         $('#curso').html('<option value="">Curso</option>');
                         $('#grupo').html('<option value="">Grupo</option>');
                     }
+                });
+
+                $('#modulo').change(function () {
+
+                    var modulo = $('#modulo').val();
+
+                    if (modulo !== '')
+                    {
+
+                        var moduloselec = $('#modulo option:selected').text();
+
+                        document.getElementById('pruebaModulo').value = moduloselec;
+
+                        $.ajax({
+                            url: "<?php echo base_url ?>usuario/listadoCurso",
+                            method: "POST",
+                            data: {modulo: modulo},
+                            success: function (data)
+                            {
+                                $('#curso').html(data);
+                            }
+                        });
+                    } else {
+                        $('#curso').html('<option value="">Curso</option>');
+                        $('#grupo').html('<option value="">Grupo</option>');
+                    }
+                });
+
+                $('#curso').change(function () {
+
+                    var curso = $('#curso').val();
+
+                    if (curso !== '')
+                    {
+
+                        var cursoselec = $('#curso option:selected').text();
+
+                        document.getElementById('pruebaCurso').value = cursoselec;
+
+                        $.ajax({
+                            url: "<?php echo base_url ?>usuario/listadoGrupo",
+                            method: "POST",
+                            data: {curso: curso},
+                            success: function (data)
+                            {
+                                $('#grupo').html(data);
+                            }
+                        });
+                    } else {
+                        $('#grupo').html('<option value="">Grupo</option>');
+                    }
+                });
+
+                $('#grupo').change(function () {
+
+                    var gruposelec = $('#grupo option:selected').text();
+
+                    document.getElementById('pruebaGrupo').value = gruposelec;
+
+
                 });
 
 

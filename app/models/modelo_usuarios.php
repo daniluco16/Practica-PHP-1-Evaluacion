@@ -1,5 +1,10 @@
 <?php
 
+if(!isset($_SESSION)){
+    
+    session_start();
+}
+
 include_once 'models/modelo.php';
 
 class usuarios_model {
@@ -11,7 +16,6 @@ class usuarios_model {
         $this->db = bbdd::conectar();
     }
 
-    
     /**
      * @funcionlog 
      * 
@@ -47,7 +51,6 @@ class usuarios_model {
 
         return $return;
     }
-
 
     /**
      *  @login_usuarios
@@ -99,7 +102,6 @@ class usuarios_model {
 
         return $return;
     }
-
 
     /**
      * 
@@ -180,7 +182,7 @@ class usuarios_model {
 
         return $return;
     }
-    
+
     /**
      * @insertar_usuarios_admin
      * 
@@ -560,6 +562,40 @@ class usuarios_model {
 
         return $return;
     }
+    
+    
+    public function insertAsignaturas($asignatura) {
+        
+        
+        $return = [
+            "correcto" => FALSE,
+            "error" => NULL
+        ];
+
+        try {
+
+            echo "entro";
+            //$this->db->beginTransaction();
+            
+            $sql = "UPDATE usuarios SET asignatura = concat(asignatura, :asignatura) WHERE dni = :dni";
+
+            $consulta = $this->db->prepare($sql);
+
+            $result = $consulta->execute(['asignatura' => $asignatura, 'dni' => $_SESSION['dni']]);
+
+        } catch (PDOException $ex) {
+
+            $return['error'] = $ex->getMessage();
+
+            echo $ex->getMessage();
+        }
+
+        return $return;
+        
+        
+    }
+    
+    
 
     /**
      * @listadoFM
@@ -590,11 +626,16 @@ class usuarios_model {
 
                 $fm = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
+                $output = '<option value="">' . 'Familias Profesionales' . '</option>';
+
                 foreach ($fm as $row) {
-                    
-                    $output .= '<option value="' . $row['nombre'] . '">' . $row['nombre'] . '</option>';
+
+                    if ($row['nombre'] == 'Informática') {
+
+                        $output .= '<option value="' . $row['nombre'] . '">' . $row['nombre'] . '</option>';
+                    }
                 }
-                
+
                 $return['datos'] = $output;
             }
         } catch (PDOException $ex) {
@@ -634,12 +675,14 @@ class usuarios_model {
                 $return["correcto"] = TRUE;
 
                 $cf = $consulta->fetchAll(PDO::FETCH_ASSOC);
-                
+
+                $output = '<option value="">' . 'Ciclos' . '</option>';
+
                 foreach ($cf as $row) {
-                    
-                    $output .= '<option value="' . $row['nombre'] . '">' . $row['nombre'] . '</option>';
+
+                    $output .= '<option value="' . $row['codCF'] . '">' . $row['nombre'] . '</option>';
                 }
-                
+
                 $return['datos'] = $output;
             }
         } catch (PDOException $ex) {
@@ -655,11 +698,11 @@ class usuarios_model {
      * Funcion usada para el listado 
      * de las asignaturas.
      * 
+     * @param type $ciclo
      * @return type
      * 
      */
-    
-    public function listadoModulo() {
+    public function listadoModulo($ciclo) {
 
         $return = [
             "correcto" => FALSE,
@@ -669,7 +712,7 @@ class usuarios_model {
 
         try {
 
-            $sql = "SELECT * FROM modulo";
+            $sql = "SELECT * FROM modulo WHERE CF_codCF = $ciclo";
 
             $consulta = $this->db->query($sql);
 
@@ -677,7 +720,107 @@ class usuarios_model {
 
                 $return["correcto"] = TRUE;
 
-                $return["datos"] = $consulta->fetchAll(PDO::FETCH_ASSOC);
+                $modulo = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+                $output = '<option value="">' . 'Listado Asignaturas' . '</option>';
+
+                foreach ($modulo as $row) {
+
+                    $output .= '<option value="' . $row['codAsig'] . '">' . $row['nombre'] . '</option>';
+                }
+
+                $return['datos'] = $output;
+            }
+        } catch (PDOException $ex) {
+
+            $return["error"] = $ex->getMessage();
+        }
+
+        return $return;
+    }
+    
+    /**
+     * @listadoCurso
+     * Funcion que se usa para 
+     * listar los cursos de
+     * cada asignaturas.
+     * 
+     * @param type $modulo
+     * @return type
+     * 
+     */
+
+    public function listadoCurso($modulo) {
+
+        $return = [
+            "correcto" => FALSE,
+            "datos" => NULL,
+            "error" => NULL
+        ];
+
+        try {
+
+            $sql = "SELECT * FROM modulo WHERE codAsig = $modulo";
+
+            $consulta = $this->db->query($sql);
+
+            if ($consulta) {
+
+                $return["correcto"] = TRUE;
+
+                $curso = $consulta->fetch(PDO::FETCH_ASSOC);
+
+                $output = '<option value="">' . 'Curso' . '</option>';
+
+                $output .= '<option value="' . $curso['codAsig'] . '">' . $curso['curso'] . '</option>';
+
+
+                $return['datos'] = $output;
+            }
+        } catch (PDOException $ex) {
+
+            $return["error"] = $ex->getMessage();
+        }
+
+        return $return;
+    }
+
+    /**
+     * @listadoGrupo
+     * Funcion de listado de
+     * asignaturas por el grupo
+     * correspondiente.
+     * 
+     * @param type $curso
+     * @return type
+     * 
+     */
+    public function listadoGrupo($curso) {
+
+        $return = [
+            "correcto" => FALSE,
+            "datos" => NULL,
+            "error" => NULL
+        ];
+
+        try {
+
+            $sql = "SELECT * FROM modulo WHERE codAsig = $curso";
+
+            $consulta = $this->db->query($sql);
+
+            if ($consulta) {
+
+                $return["correcto"] = TRUE;
+
+                $grupo = $consulta->fetch(PDO::FETCH_ASSOC);
+
+                $output = '<option value="">' . 'Grupo' . '</option>';
+
+                $output .= '<option value="' . $grupo['codAsig'] . '">' . $grupo['grupo'] . '</option>';
+
+
+                $return['datos'] = $output;
             }
         } catch (PDOException $ex) {
 
@@ -738,7 +881,6 @@ class usuarios_model {
 
         return $return;
     }
-
 
     /**
      * * @listadoMensajes
@@ -829,7 +971,6 @@ class usuarios_model {
         return $return;
     }
 
-    
     /**
      * * @listadoCorreo
      * 

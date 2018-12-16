@@ -25,6 +25,16 @@ if (!isset($_SESSION["nombre_usuario"])) {
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
         <meta http-equiv="X-UA-Compatible" content="ie=edge">            
 
+        <style>
+            
+            .titulo{
+                
+                height: 50px;
+                
+            }
+            
+        </style>
+        
     </head>
     <body>
 
@@ -35,10 +45,10 @@ if (!isset($_SESSION["nombre_usuario"])) {
 
             <div class="card" style="width:400px">
 
-<?php if ($parametros['datos']['fotografia'] != null) : ?>
+                <?php if ($parametros['datos']['fotografia'] != null) : ?>
 
-                    <img class="card-img-top" src="<?= base_url ?>../Assets/img/fotos/<?= $parametros['datos']['fotografia'] ?>" alt="Card image" style="width:100%" height="250px"/>
-<?php else : ?>
+                    <img class="card-img-top" src="<?= base_url ?>../Assets/img/fotos/<?= $parametros['datos']['fotografia'] ?>" alt="Card image" style="width:100%" height="250"/>
+                <?php else : ?>
                     <p>EMPTY</p>
                 <?php endif; ?>
                 <div class="card-body">
@@ -50,9 +60,23 @@ if (!isset($_SESSION["nombre_usuario"])) {
                     <p class="card-text">Web: <?= $parametros['datos']['web'] ?></p>
                     <p class="card-text">Blog: <?= $parametros['datos']['blog'] ?></p>
                     <p class="card-text">Twitter: <?= $parametros['datos']['twitter'] ?></p>
+                    <p class="card-text">Asignatura</p>
+                    <?php 
+                    
+                    $asignaturas = explode(";", $parametros['datos']['asignatura']);
+                    
+                            
+                    foreach ($asignaturas as $modulo){ ?>
+                        
+                        <p class="card-text"><?= $modulo ?></p>
+                        
+                    <?php } ?>
+                            
+                    
+                    
                     <a href="<?= base_url ?>usuario/inicio" class="btn btn-primary">Volver al inicio</a>
 
-<?php if ($_SESSION['perfil'] == "Administrador" || $_SESSION['dni'] == $parametros['datos']['dni']) { ?>
+                    <?php if ($_SESSION['perfil'] == "Administrador" || $_SESSION['dni'] == $parametros['datos']['dni']) { ?>
                         <a href="<?= base_url ?>usuario/actuser&dni=<?= $parametros['datos']['dni'] ?>" class="btn btn-warning">Editar</a>
                     <?php } ?>
                 </div>

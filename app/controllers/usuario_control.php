@@ -31,7 +31,6 @@ class usuarioController {
      * para el logueo existoso del
      * usuario.
      */
-    
     public function login() {
 
         $parametros = [
@@ -109,7 +108,6 @@ class usuarioController {
         include_once 'views/login_view.php';
     }
 
-    
     /**
      * @añadiruser
      * 
@@ -117,7 +115,6 @@ class usuarioController {
      * para insertar los correspondientes
      * profesores.
      */
-    
     public function adduser() {
 
         $parametros = [
@@ -239,7 +236,6 @@ class usuarioController {
      * Funcion del controlador usada
      * para listar todos los usuarios.
      */
-    
     public function listado() {
 
         $parametros = [
@@ -265,8 +261,7 @@ class usuarioController {
 
         include_once 'views/listado_view.php';
     }
-    
-    
+
     /**
      * @listadOSolic
      * 
@@ -274,7 +269,6 @@ class usuarioController {
      * para el listado de usuarios pendientes. 
      * 
      */
-
     public function listadoSolicitudes() {
 
         $parametros = [
@@ -344,7 +338,6 @@ class usuarioController {
      * Funcion del controlador para 
      * actualizar solicitudes.
      */
-    
     public function actSolicitud() {
 
         if (isset($_GET['dni']) && (is_string($_GET['dni']))) {
@@ -564,7 +557,7 @@ class usuarioController {
 
         include_once 'views/actualizar_view.php';
     }
-    
+
     /**
      * @registroAdmin
      * 
@@ -572,7 +565,6 @@ class usuarioController {
      * al admin añadir un usuario
      * 
      */
-
     public function registroAdmin() {
 
         $parametros = [
@@ -714,20 +706,42 @@ class usuarioController {
 
         include_once 'views/perfil_view.php';
     }
-    
+
     public function index() {
-        
+
         require_once 'views/asignaturas_view.php';
-        
     }
 
+    
+    public function ingresarAsignaturas() {
+        
+        $ensenanza = $_POST['pruebaensenanza'];
+        $familia = $_POST['pruebaFP'];
+        $ciclo = $_POST['pruebaCiclo'];
+        $modulo = $_POST['pruebaModulo'];
+        $curso = $_POST['pruebaCurso'];
+        $grupo = $_POST['pruebaGrupo'];
+        
+        $asignatura = $ensenanza . "/" . $familia . "/" . $ciclo . "/" . $modulo . "/" . $curso . "/" . $grupo . ";";
+        
+        var_dump($asignatura);
+        if (!empty($ensenanza) || !empty($familia) || !empty($ciclo) || !empty($modulo) || !empty($curso) || !empty($grupo)){
+            
+            $resultModelo = $this->modelo->insertAsignaturas($asignatura);
+            
+            header("Location:" . base_url . "usuario/inicio");
+            
+        } else {
+        
+            $this->index();
+            
+        }
+        
+    }
+    
+    
     public function listadoFM() {
 
-        $parametrosFM = [
-            "correcto" => FALSE,
-            "datos" => NULL,
-            "error" => ""
-        ];
 
         if (isset($_POST['ensenanzas'])) {
 
@@ -739,17 +753,11 @@ class usuarioController {
 
                 echo $resultModelo['datos'];
             }
-        }    
+        }
     }
 
-    
     public function listadoCF() {
 
-        $parametrosCF = [
-            "correcto" => FALSE,
-            "datos" => NULL,
-            "error" => ""
-        ];
 
         if (isset($_POST['familia'])) {
 
@@ -760,6 +768,52 @@ class usuarioController {
 
             if ($resultModelo['correcto']) {
 
+                echo $resultModelo['datos'];
+            }
+        }
+    }
+
+    public function listadoModulo() {
+
+        if (isset($_POST['ciclo'])) {
+
+            $ciclo = $_POST['ciclo'];
+
+            $resultModelo = $this->modelo->listadoModulo($ciclo);
+
+
+            if ($resultModelo['correcto']) {
+
+                echo $resultModelo['datos'];
+            }
+        }
+    }
+    
+    public function listadoCurso() {
+
+        if (isset($_POST['modulo'])) {
+
+            $modulo = $_POST['modulo'];
+
+            $resultModelo = $this->modelo->listadoCurso($modulo);
+
+            if ($resultModelo['correcto']) {
+                
+                echo $resultModelo['datos'];
+            }
+        }
+    }
+    
+    public function listadoGrupo() {
+
+        if (isset($_POST['curso'])) {
+
+            $curso = $_POST['curso'];
+
+            $resultModelo = $this->modelo->listadoGrupo($curso);
+
+            if ($resultModelo['correcto']) {
+                
                 echo $resultModelo['datos'];
             }
         }
@@ -815,6 +869,7 @@ class usuarioController {
 
         include_once 'views/enviarMensaje_view.php';
     }
+
     /**
      * @listadoMensajes
      * 
@@ -884,7 +939,7 @@ class usuarioController {
         }
         $this->listadoMensajes();
     }
-    
+
     /**
      * @envioCorreo
      * 
@@ -892,7 +947,6 @@ class usuarioController {
      * dando uso de un servidor fake de envio.
      * 
      */
-
     public function envioCorreo() {
 
 
@@ -1032,11 +1086,10 @@ class usuarioController {
 
         header("Location:" . base_url . "usuario/login");
     }
-    
+
     public function error() {
-        
+
         echo 'ERROR 404';
-        
     }
 
 }

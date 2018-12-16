@@ -5,9 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
-        <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" crossorigin="anonymous">
 
         <title>Instalador</title>
 
@@ -17,7 +16,7 @@
                 src: url('fonts/Poppins-Bold.ttf'); 
             }
 
-            .container{
+            .contenedor{
 
                 margin-top: 18%;
                 font-family: Poppins-Bold;
@@ -49,11 +48,8 @@
     </body>
 </html>
 
-<?php
-
-function formulario($error) {
-    ?>
-    <div class="container">
+<?php function formulario($error) { ?>
+    <div class="contenedor">
         <div class="col-md-8 offset-md-2">
             <div class="card card-block">
                 <h2 class="card-title text-md-center">Instalador de la base de datos</h2>
@@ -125,7 +121,7 @@ function formulario($error) {
  */
 function errores() {
     //Cargamos los valores de configuración que deberá tener nuestra base de datos
-    //include "../app/config.php";
+    include "../app/config.php";
 
     //Verificamos que los valores del formulario coinciden con los de nuestro fichero de configuración
     if ($_POST["servidor"] != array("host" => "localhost") || $_POST["usuario"] != array("user" => "root") || $_POST["password"] != array("pass" => "") || empty(trim($_POST["basedatos"]))) {
@@ -140,7 +136,7 @@ function errores() {
 function creaConfig($servidor, $usuario, $password, $basedatos) {
     //Generamos un fichero con la información de configuración de la BD
     //Abrimos el fichero config.php en modo escritura mediante la función fopen (crear/leer archivos)
-    //$file = fopen("../app/config.php", "w");
+    $file = fopen("../app/config.php", "w");
     //Escribimos en el fichero los datos de configuración, de los que sólo es modificable el nombre de la base datos
     fwrite($file, '
     <?php
@@ -164,7 +160,7 @@ function creaBD() {
     // Incluimos el contenido del archivo de configuración...
     require_once '../app/config.php';
     //Creamos un objeto de la clase db_conf, que es la definida en config.php
-    //$db_conf = new db_conf();
+    $db_conf = new db_conf();
     //Definimos el conjunto de instrucciones SQL para crear nuestra base de datos
     $creabd = "CREATE DATABASE IF NOT EXISTS `" . array("database" => "mydb") . "` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
   	     USE `" . array("database" => "mydb") . "`;";
